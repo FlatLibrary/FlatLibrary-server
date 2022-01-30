@@ -1,6 +1,6 @@
 package com.flat.library.service
 
-import com.flat.library.service.FileDataAPIGrpc.getServiceDescriptor
+import com.flat.library.service.ServerAPIGrpc.getServiceDescriptor
 import io.grpc.CallOptions
 import io.grpc.CallOptions.DEFAULT
 import io.grpc.Channel
@@ -23,29 +23,29 @@ import kotlin.jvm.JvmOverloads
 import kotlin.jvm.JvmStatic
 
 /**
- * Holder for Kotlin coroutine-based client and server APIs for service.FileDataAPI.
+ * Holder for Kotlin coroutine-based client and server APIs for service.ServerAPI.
  */
-object FileDataAPIGrpcKt {
-  const val SERVICE_NAME: String = FileDataAPIGrpc.SERVICE_NAME
+object ServerAPIGrpcKt {
+  const val SERVICE_NAME: String = ServerAPIGrpc.SERVICE_NAME
 
   @JvmStatic
   val serviceDescriptor: ServiceDescriptor
-    get() = FileDataAPIGrpc.getServiceDescriptor()
+    get() = ServerAPIGrpc.getServiceDescriptor()
 
-  val fileListMethod: MethodDescriptor<FileService.File, FileService.FileList>
+  val getDetailsMethod: MethodDescriptor<ServerService.ClientInfo, ServerService.ServerInfo>
     @JvmStatic
-    get() = FileDataAPIGrpc.getFileListMethod()
+    get() = ServerAPIGrpc.getGetDetailsMethod()
 
   /**
-   * A stub for issuing RPCs to a(n) service.FileDataAPI service as suspending coroutines.
+   * A stub for issuing RPCs to a(n) service.ServerAPI service as suspending coroutines.
    */
-  @StubFor(FileDataAPIGrpc::class)
-  class FileDataAPICoroutineStub @JvmOverloads constructor(
+  @StubFor(ServerAPIGrpc::class)
+  class ServerAPICoroutineStub @JvmOverloads constructor(
     channel: Channel,
     callOptions: CallOptions = DEFAULT
-  ) : AbstractCoroutineStub<FileDataAPICoroutineStub>(channel, callOptions) {
-    override fun build(channel: Channel, callOptions: CallOptions): FileDataAPICoroutineStub =
-        FileDataAPICoroutineStub(channel, callOptions)
+  ) : AbstractCoroutineStub<ServerAPICoroutineStub>(channel, callOptions) {
+    override fun build(channel: Channel, callOptions: CallOptions): ServerAPICoroutineStub =
+        ServerAPICoroutineStub(channel, callOptions)
 
     /**
      * Executes this RPC and returns the response message, suspending until the RPC completes
@@ -58,22 +58,22 @@ object FileDataAPIGrpcKt {
      *
      * @return The single response from the server.
      */
-    suspend fun fileList(request: FileService.File): FileService.FileList = unaryRpc(
+    suspend fun getDetails(request: ServerService.ClientInfo): ServerService.ServerInfo = unaryRpc(
       channel,
-      FileDataAPIGrpc.getFileListMethod(),
+      ServerAPIGrpc.getGetDetailsMethod(),
       request,
       callOptions,
       Metadata()
     )}
 
   /**
-   * Skeletal implementation of the service.FileDataAPI service based on Kotlin coroutines.
+   * Skeletal implementation of the service.ServerAPI service based on Kotlin coroutines.
    */
-  abstract class FileDataAPICoroutineImplBase(
+  abstract class ServerAPICoroutineImplBase(
     coroutineContext: CoroutineContext = EmptyCoroutineContext
   ) : AbstractCoroutineServerImpl(coroutineContext) {
     /**
-     * Returns the response to an RPC for service.FileDataAPI.fileList.
+     * Returns the response to an RPC for service.ServerAPI.getDetails.
      *
      * If this method fails with a [StatusException], the RPC will fail with the corresponding
      * [io.grpc.Status].  If this method fails with a [java.util.concurrent.CancellationException],
@@ -83,14 +83,14 @@ object FileDataAPIGrpcKt {
      *
      * @param request The request from the client.
      */
-    open suspend fun fileList(request: FileService.File): FileService.FileList = throw
-        StatusException(UNIMPLEMENTED.withDescription("Method service.FileDataAPI.fileList is unimplemented"))
+    open suspend fun getDetails(request: ServerService.ClientInfo): ServerService.ServerInfo = throw
+        StatusException(UNIMPLEMENTED.withDescription("Method service.ServerAPI.getDetails is unimplemented"))
 
     final override fun bindService(): ServerServiceDefinition = builder(getServiceDescriptor())
       .addMethod(unaryServerMethodDefinition(
       context = this.context,
-      descriptor = FileDataAPIGrpc.getFileListMethod(),
-      implementation = ::fileList
+      descriptor = ServerAPIGrpc.getGetDetailsMethod(),
+      implementation = ::getDetails
     )).build()
   }
 }
